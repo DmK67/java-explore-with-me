@@ -17,13 +17,13 @@ import java.util.List;
 @Slf4j
 public class StatsController {
 
-    private final StatsService statService;
+    private final StatsService statsService;
 
     @PostMapping("/hit") // Сохранение информации о том, что к эндпоинту был запрос
     @ResponseStatus(HttpStatus.CREATED)
     public void addHit(@RequestBody HitDto hitDto) {
         log.info("Stats server: POST hit={}", hitDto);
-        statService.addHit(hitDto);
+        statsService.addHit(hitDto);
     }
 
     @GetMapping("/stats") // Получение статистики по посещениям
@@ -33,7 +33,7 @@ public class StatsController {
                                    @RequestParam(required = false) String[] uris,
                                    @RequestParam(defaultValue = "false") boolean unique) {
         log.info("Stats server: GET stats start={}, end={}, uris={}, unique={}", start, end, uris, unique);
-        return statService.getStats(LocalDateTime.parse(start, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+        return statsService.getStats(LocalDateTime.parse(start, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
                 LocalDateTime.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), uris, unique);
     }
 }
