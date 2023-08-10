@@ -10,14 +10,15 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
+    <artifactId>stats</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
     <modules>
         <module>stats-dto</module>
         <module>stats-service</module>
         <module>stats-client</module>
     </modules>
-
-    <artifactId>stats</artifactId>
-    <packaging>pom</packaging>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -27,9 +28,10 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
             <optional>true</optional>
+
         </dependency>
 
         <dependency>
@@ -37,5 +39,5 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
     </dependencies>
-    
+
 </project>

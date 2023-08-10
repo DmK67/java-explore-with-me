@@ -2,16 +2,17 @@ version: '3.1'
 services:
   stats-server:
     build: ./stats/stats-service
-    image: stats_service
+    #image: stats_service
     container_name: stats-server
     ports:
       - "9090:9090"
-    depends_on:
-      - stats-db
+    #depends_on:
+    #  - stats-db
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/statsdb
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
 
 
   stats-db:
@@ -29,6 +30,8 @@ services:
   ewm-service:
     ports:
       - "8080:8080"
+    environment:
+      - CLIENT_URL=http://stats-server:9090
 
-  ewm-db:
-    image: postgres:14-alpine
+  #ewm-db:
+  #  image: postgres:14-alpine

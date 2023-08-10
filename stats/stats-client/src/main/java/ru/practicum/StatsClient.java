@@ -3,12 +3,10 @@ package ru.practicum;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 
-@Component
 public class StatsClient {
     private final RestTemplate rest;
     private static final String STATS_SERVER_URL = "http://localhost:9090";
