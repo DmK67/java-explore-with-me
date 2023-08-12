@@ -3,6 +3,7 @@ package ru.practicum.mapper;
 import lombok.experimental.UtilityClass;
 import ru.practicum.StatsDto;
 import ru.practicum.model.Stats;
+
 @UtilityClass
 public class StatsMapper {
 
