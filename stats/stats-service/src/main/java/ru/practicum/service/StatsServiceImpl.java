@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.HitDto;
 import ru.practicum.StatsDto;
+import ru.practicum.mapper.HitMapper;
 import ru.practicum.mapper.StatsMapper;
 import ru.practicum.model.Stats;
 import ru.practicum.repository.StatsRepository;
@@ -13,7 +14,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static ru.practicum.mapper.HitMapper.toHit;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +22,7 @@ public class StatsServiceImpl implements StatsService {
 
     @Override
     public void addHit(HitDto hitDto) {
-        statsRepository.save(toHit(hitDto));
+        statsRepository.save(HitMapper.toHit(hitDto));
     }
 
     @Override
