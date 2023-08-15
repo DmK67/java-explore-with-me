@@ -25,7 +25,7 @@
 
 	<modules>
 		<module>stats</module>
-		<module>ewm-service</module>
+		<module>main-service</module>
 	</modules>
 
 	<dependencies>
