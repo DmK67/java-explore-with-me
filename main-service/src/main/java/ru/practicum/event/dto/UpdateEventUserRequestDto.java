@@ -2,6 +2,7 @@ package ru.practicum.event.dto;
 
 import lombok.*;
 import ru.practicum.event.StateUserAction;
+import ru.practicum.location.dto.LocationDto;
 
 import javax.validation.constraints.Size;
 

@@ -7,6 +7,12 @@ import org.springframework.stereotype.Service;
 import ru.practicum.category.Category;
 import ru.practicum.category.CategoryRepository;
 import ru.practicum.event.dto.*;
+import ru.practicum.exceptions.*;
+import ru.practicum.location.Location;
+import ru.practicum.location.LocationRepository;
+import ru.practicum.stats.StatsClient;
+import ru.practicum.user.User;
+import ru.practicum.user.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -18,6 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static ru.practicum.event.dto.EventMapper.*;
+import static ru.practicum.location.dto.LocationMapper.toLocation;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +35,7 @@ public class EventServiceImpl implements EventService {
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final LocationRepository locationRepository;
-    private final StatClient statClient;
+    private final StatsClient statClient;
 
     @Override
     public EventFullDto createEvent(Long userId, NewEventDto newEventDto) {
