@@ -1,6 +1,7 @@
 package ru.practicum.compilation.dto;
 
 import ru.practicum.compilation.Compilation;
+import ru.practicum.event.dto.EventMapper;
 
 import java.util.Collections;
 import java.util.stream.Collectors;

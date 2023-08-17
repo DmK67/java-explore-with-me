@@ -7,6 +7,10 @@ import org.springframework.stereotype.Service;
 import ru.practicum.category.dto.CategoryDto;
 import ru.practicum.category.dto.CategoryMapper;
 import ru.practicum.category.dto.NewCategoryDto;
+import ru.practicum.event.Event;
+import ru.practicum.event.EventRepository;
+import ru.practicum.exceptions.CategoryNotFoundException;
+import ru.practicum.exceptions.ForbiddenException;
 
 import java.util.List;
 import java.util.stream.Collectors;

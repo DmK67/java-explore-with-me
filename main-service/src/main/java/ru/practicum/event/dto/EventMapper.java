@@ -1,11 +1,17 @@
 package ru.practicum.event.dto;
 
 import ru.practicum.event.Event;
+import ru.practicum.request.ParticipationRequest;
+import ru.practicum.request.ParticipationRequestStatus;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import static ru.practicum.category.dto.CategoryMapper.toCategoryDto;
+import static ru.practicum.location.dto.LocationMapper.toLocation;
+import static ru.practicum.location.dto.LocationMapper.toLocationDto;
+import static ru.practicum.user.dto.UserMapper.toUserShortDto;
 
 public class EventMapper {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

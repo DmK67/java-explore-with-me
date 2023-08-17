@@ -3,6 +3,9 @@ package ru.practicum.event;
 import lombok.*;
 import ru.practicum.category.Category;
 import ru.practicum.compilation.Compilation;
+import ru.practicum.location.Location;
+import ru.practicum.request.ParticipationRequest;
+import ru.practicum.user.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

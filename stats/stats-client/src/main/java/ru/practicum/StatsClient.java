@@ -1,13 +1,14 @@
-package ru.practicum.stats;
+package ru.practicum;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import ru.practicum.HitDto;
 
 import java.util.Map;
 
+@Service
 public class StatsClient {
     private final RestTemplate rest;
     private static final String STATS_SERVER_URL = "http://localhost:9090";

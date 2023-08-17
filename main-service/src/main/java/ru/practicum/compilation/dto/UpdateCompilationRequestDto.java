@@ -1,12 +1,12 @@
 package ru.practicum.compilation.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Builder
+@Getter
+@Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class UpdateCompilationRequestDto {

@@ -2,6 +2,8 @@ package ru.practicum.event.dto;
 
 import lombok.*;
 import ru.practicum.category.dto.CategoryDto;
+import ru.practicum.location.dto.LocationDto;
+import ru.practicum.user.dto.UserShortDto;
 
 @Builder
 @Getter

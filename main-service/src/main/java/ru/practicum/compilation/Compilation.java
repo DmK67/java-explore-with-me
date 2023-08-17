@@ -1,8 +1,10 @@
 package ru.practicum.compilation;
 
 import lombok.*;
+import ru.practicum.event.Event;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter

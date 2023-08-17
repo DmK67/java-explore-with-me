@@ -3,6 +3,9 @@ package ru.practicum.compilation.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import ru.practicum.event.dto.EventShortDto;
+
+import java.util.List;
 
 @Builder
 @RequiredArgsConstructor

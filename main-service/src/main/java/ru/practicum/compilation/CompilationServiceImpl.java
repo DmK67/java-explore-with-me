@@ -8,6 +8,9 @@ import ru.practicum.compilation.dto.CompilationDto;
 import ru.practicum.compilation.dto.CompilationMapper;
 import ru.practicum.compilation.dto.NewCompilationDto;
 import ru.practicum.compilation.dto.UpdateCompilationRequestDto;
+import ru.practicum.event.EventRepository;
+import ru.practicum.exceptions.CompilationNotFoundException;
+import ru.practicum.exceptions.ValidationRequestException;
 
 import java.util.Collections;
 import java.util.List;
