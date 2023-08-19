@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.practicum.HitDto;
+import ru.practicum.StatsClient;
 import ru.practicum.StatsDto;
 import ru.practicum.category.Category;
 import ru.practicum.category.CategoryRepository;
@@ -13,7 +14,6 @@ import ru.practicum.event.dto.*;
 import ru.practicum.exceptions.*;
 import ru.practicum.location.Location;
 import ru.practicum.location.LocationRepository;
-import ru.practicum.StatsClient;
 import ru.practicum.user.User;
 import ru.practicum.user.UserRepository;
 
@@ -266,7 +266,8 @@ public class EventServiceImpl implements EventService {
                     case VIEWS:
                         eventShortDtos.sort(Comparator.comparing(EventShortDto::getViews));
                         break;
-                    default: throw new ValidationRequestException("Parameter sort is not valid");
+                    default:
+                        throw new ValidationRequestException("Parameter sort is not valid");
                 }
             }
         }
@@ -307,15 +308,17 @@ public class EventServiceImpl implements EventService {
     private Integer getCountHits(HttpServletRequest request) {
         log.info("Client ip: {}", request.getRemoteAddr());
         log.info("Endpoint path: {}", request.getRequestURI());
-        ResponseEntity<Object> response = statsClient.getStats(
+
+        ResponseEntity<StatsDto[]> response = statsClient.getStats(
                 LocalDateTime.now().minusYears(100).format(formatter),
                 LocalDateTime.now().format(formatter),
-                new String[] {request.getRequestURI()},
+                new String[]{request.getRequestURI()},
                 true);
+
         Optional<StatsDto> statDto;
         Integer hits = 0;
         if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-            statDto = Arrays.stream((StatsDto[]) new Object[]{response.getBody()}).findFirst();
+            statDto = Arrays.stream(response.getBody()).findFirst();
             if (statDto.isPresent()) {
                 hits = statDto.get().getHits();
             }
