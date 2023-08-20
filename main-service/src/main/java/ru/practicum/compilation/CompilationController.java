@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Validated
 public class CompilationController {
     private final CompilationService compilationService;
 
@@ -31,13 +32,13 @@ public class CompilationController {
 
     @PostMapping("/admin/compilations")
     @ResponseStatus(HttpStatus.CREATED)
-    public CompilationDto createCompilation(@RequestBody @Validated NewCompilationDto newCompilationDto) {
+    public CompilationDto createCompilation(@RequestBody @Valid NewCompilationDto newCompilationDto) {
         return compilationService.createCompilation(newCompilationDto);
     }
 
     @PatchMapping("/admin/compilations/{compId}")
     public CompilationDto updateCompilation(@PathVariable @Valid @Positive Long compId,
-                                            @RequestBody @Validated UpdateCompilationRequestDto updateCompilationRequestDto) {
+                                            @RequestBody @Valid UpdateCompilationRequestDto updateCompilationRequestDto) {
         return compilationService.updateCompilation(compId, updateCompilationRequestDto);
     }
 

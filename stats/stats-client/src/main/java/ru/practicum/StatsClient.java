@@ -14,7 +14,8 @@ public class StatsClient {
     private final String serverUrl;
     private final RestTemplate rest;
 
-    public StatsClient(@Value("${app.stats.url:http://localhost:9090}") String serverUrl) {
+    //public StatsClient(@Value("${app.stats.url:http://stats-server:9090}") String serverUrl) { // для Докер
+    public StatsClient(@Value("${app.stats.url:http://localhost:9090}") String serverUrl) { // локально
         this.rest = new RestTemplate();
         this.serverUrl = serverUrl;
     }
