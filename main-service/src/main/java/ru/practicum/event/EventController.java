@@ -17,6 +17,16 @@ import java.util.List;
 public class EventController {
     private final EventService eventService;
 
+    /**
+     * POST /users/{userId}/events Добавление нового события. Обратите внимание: дата и время на которые намечено
+     * событие не может быть раньше, чем через два часа от текущего момента.
+     * userId - id текущего пользователя
+     * Request body - данные добавляемого события
+     * Responses:
+     * 201 - Событие добавлено. Example:
+     * 400 - Запрос составлен некорректно
+     * 409 - Событие не удовлетворяет правилам создания
+     */
     @PostMapping("/users/{userId}/events")
     @ResponseStatus(HttpStatus.CREATED)
     public EventFullDto createEvent(@PathVariable @Valid @Positive Long userId,
@@ -24,6 +34,16 @@ public class EventController {
         return eventService.createEvent(userId, newEventDto);
     }
 
+    /**
+     * GET /users/{userId}/events Получение событий, добавленных текущим пользователем. В случае, если по заданным
+     * фильтрам не найдено ни одного события, возвращает пустой список.
+     * userId - id текущего пользователя
+     * from - количество элементов, которые нужно пропустить для формирования текущего набора. Default value : 0
+     * size - количество элементов в наборе. Default value : 10
+     * Responses:
+     * 200 - События найдены
+     * 400 - Запрос составлен некорректно.
+     */
     @GetMapping("/users/{userId}/events")
     public List<EventShortDto> getEvents(@PathVariable @Valid @Positive Long userId,
                                          @RequestParam(defaultValue = "0") @PositiveOrZero int from,
@@ -31,12 +51,36 @@ public class EventController {
         return eventService.getEvents(userId, from, size);
     }
 
+    /**
+     * GET /users/{userId}/events/{eventId} Получение полной информации о событии добавленном текущим пользователем.
+     * В случае, если события с заданным id не найдено, возвращает статус код 404
+     * userId - id текущего пользователя
+     * eventId - id события
+     * Responses:
+     * 200 - Событие найдено
+     * 400 - Запрос составлен некорректно
+     * 404 - Событие не найдено или недоступно
+     */
     @GetMapping("/users/{userId}/events/{eventId}")
     public EventFullDto getEventById(@PathVariable @Valid @Positive Long userId,
                                      @PathVariable @Valid @Positive Long eventId) {
         return eventService.getEventById(userId, eventId);
     }
 
+    /**
+     * PATCH /users/{userId}/events/{eventId} Изменение события добавленного текущим пользователем.
+     * Обратите внимание: изменить можно только отмененные события или события в состоянии ожидания модерации
+     * (Ожидается код ошибки 409) дата и время на которые намечено событие не может быть раньше, чем через два
+     * часа от текущего момента (Ожидается код ошибки 409)
+     * userId - id текущего пользователя
+     * eventId - id редактируемого события
+     * Request body - Новые данные события
+     * Responses:
+     * 200 - Событие обновлено
+     * 400 - Запрос составлен некорректно
+     * 404 - Событие не найдено или недоступно
+     * 409 - Событие не удовлетворяет правилам редактирования
+     */
     @PatchMapping("/users/{userId}/events/{eventId}")
     public EventFullDto updateEventByUser(@PathVariable @Valid @Positive Long userId,
                                           @PathVariable @Valid @Positive Long eventId,
@@ -56,8 +100,9 @@ public class EventController {
     }
 
     @PatchMapping("/admin/events/{eventId}")
-    public EventFullDto updateEventByAdmin(@PathVariable @Valid @Positive Long eventId,
-                                           @RequestBody @Validated UpdateEventAdminRequestDto updateEventAdminRequestDto) {
+    public EventFullDto updateEventByAdmin(
+            @PathVariable @Valid @Positive Long eventId,
+            @RequestBody @Validated UpdateEventAdminRequestDto updateEventAdminRequestDto) {
         return eventService.updateEventByAdmin(eventId, updateEventAdminRequestDto);
     }
 
