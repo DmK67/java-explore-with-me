@@ -13,8 +13,10 @@ import ru.practicum.user.UserController;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolationException;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
 
 @RestControllerAdvice(assignableTypes = {
         UserController.class,
@@ -51,7 +53,8 @@ public class ErrorHandler {
                 e.getMessage(), LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_TIME_PATTERN)));
     }
 
-    @ExceptionHandler
+    //@ExceptionHandler
+    @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ApiError handleValidationException(ConstraintViolationException e) {
         return new ApiError("CONFLICT", "Integrity constraint has been violated.",
@@ -62,6 +65,13 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public ApiError handleForbiddenException(ForbiddenException e) {
         return new ApiError("FORBIDDEN", "For the requested operation the conditions are not met.",
+                e.getMessage(), LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_TIME_PATTERN)));
+    }
+
+    @ExceptionHandler(SQLException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ApiError handleSQLException(final SQLException e) {
+        return new ApiError("CONFLICT", "Integrity constraint has been violated.",
                 e.getMessage(), LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_TIME_PATTERN)));
     }
 }
