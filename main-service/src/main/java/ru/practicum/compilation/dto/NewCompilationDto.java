@@ -13,11 +13,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class NewCompilationDto {
-    private List<Long> events;
-    private Boolean pinned = false;
+    private List<Long> events; // Список идентификаторов событий входящих в подборку
+    private Boolean pinned = false; // Закреплена ли подборка на главной странице сайта
 
     @NotNull
     @NotBlank
     @Size(min = 1, max = 50)
-    private String title;
+    private String title; // Заголовок подборки
 }

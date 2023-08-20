@@ -16,5 +16,5 @@ public class NewCategoryDto {
     @Size(min = 1, max = 50)
     @NotNull
     @NotBlank
-    private String name;
+    private String name; // Название категории
 }

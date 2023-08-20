@@ -17,10 +17,10 @@ public class NewUserRequestDto {
     @NotNull
     @NotBlank
     @Size(min = 2, max = 250)
-    private String name;
+    private String name; // Имя
 
     @NotNull
     @Email
     @Size(min = 6, max = 254)
-    private String email;
+    private String email; // Почтовый адрес(e-mail)
 }

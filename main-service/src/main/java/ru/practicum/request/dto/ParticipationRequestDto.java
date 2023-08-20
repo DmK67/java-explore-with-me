@@ -9,13 +9,13 @@ import lombok.*;
 @AllArgsConstructor
 public class ParticipationRequestDto {
 
-    private Long id;
+    private Long id; // Идентификатор заявки
 
-    private Long event;
+    private Long event; // Идентификатор события
 
-    private Long requester;
+    private Long requester; // Идентификатор пользователя, отправившего заявку
 
-    private String status;
+    private String status; // Статус заявки
 
-    private String created;
+    private String created; // Дата и время создания заявки
 }

@@ -13,6 +13,6 @@ import java.util.List;
 public class CompilationDto {
     private Long id;
     private List<EventShortDto> events;
-    private Boolean pinned;
-    private String title;
+    private Boolean pinned; // Закреплена ли подборка на главной странице сайта
+    private String title; // Заголовок подборки
 }
