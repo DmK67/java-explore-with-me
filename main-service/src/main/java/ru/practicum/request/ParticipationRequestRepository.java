@@ -20,7 +20,8 @@ public interface ParticipationRequestRepository extends JpaRepository<Participat
     List<Optional<ParticipationRequest>> findByEventIn(List<Event> userEvents);
 
     @Modifying
-    @Query("update ParticipationRequest r set r.status = :newStatus where (r.event = :event and r.status = :searchStatus)")
+    @Query("update ParticipationRequest r set r.status = :newStatus where (r.event = :event" +
+            " and r.status = :searchStatus)")
     void updateRequestStatusByEventIdAndStatus(@Param(value = "event") Event event,
                                                @Param(value = "searchStatus") ParticipationRequestStatus searchStatus,
                                                @Param(value = "newStatus") ParticipationRequestStatus newStatus);

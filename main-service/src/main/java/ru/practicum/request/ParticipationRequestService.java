@@ -16,6 +16,6 @@ public interface ParticipationRequestService {
 
     List<ParticipationRequestDto> getParticipationRequestsForUserEvent(Long userId, Long eventId);
 
-    EventRequestStatusUpdateResultDto changeParticipationRequestsStatus(Long userId, Long eventId,
-                                                                        EventRequestStatusUpdateRequestDto eventRequestStatusUpdateRequest);
+    EventRequestStatusUpdateResultDto changeParticipationRequestsStatus(
+            Long userId, Long eventId, EventRequestStatusUpdateRequestDto eventRequestStatusUpdateRequest);
 }

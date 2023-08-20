@@ -77,18 +77,21 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventFullDto updateEventByUser(Long userId, Long eventId, UpdateEventUserRequestDto updateEventUserRequestDto) {
+    public EventFullDto updateEventByUser(Long userId, Long eventId,
+                                          UpdateEventUserRequestDto updateEventUserRequestDto) {
         log.info("Updating event information: user_id = " + userId + ", event_id = " + eventId +
                 ", update_event = " + updateEventUserRequestDto);
         userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         Event event = eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException(eventId));
-        if (event.getState() != null && event.getState() != EventState.PENDING && event.getState() != EventState.CANCELED) {
+        if (event.getState() != null && event.getState() != EventState.PENDING && event.getState()
+                != EventState.CANCELED) {
             throw new ForbiddenException("Only pending or canceled events can be changed");
         }
         if (updateEventUserRequestDto.getEventDate() != null
                 && LocalDateTime.parse(updateEventUserRequestDto.getEventDate(), formatter)
                 .isBefore(LocalDateTime.now().plusHours(2))) {
-            throw new ValidationRequestException(String.format("Event date must not be before 2 hours from current time. New value: %s",
+            throw new ValidationRequestException(String.format("Event date must not be before 2 hours from current" +
+                            " time. New value: %s",
                     updateEventUserRequestDto.getEventDate()));
         }
         if (updateEventUserRequestDto.getTitle() != null) {
@@ -141,15 +144,19 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventFullDto updateEventByAdmin(Long eventId, UpdateEventAdminRequestDto updateEventAdminRequestDto) {
-        log.info("updating information about the event by the administrator: event_id = " + eventId + ", update_event = " + updateEventAdminRequestDto);
+        log.info("updating information about the event by the administrator: event_id = " + eventId
+                + ", update_event = " + updateEventAdminRequestDto);
         Event event = eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException(eventId));
         if (updateEventAdminRequestDto.getStateAction() != null) {
             if (updateEventAdminRequestDto.getStateAction() == StateAdminAction.PUBLISH_EVENT) {
                 if (event.getState() != EventState.PENDING) {
-                    throw new ForbiddenException("Cannot publish the event because it's not in the right state: " + event.getState());
+                    throw new ForbiddenException("Cannot publish the event because it's not in the right state: "
+                            + event.getState());
                 }
-                if (event.getPublishedOn() != null && event.getEventDate().isAfter(event.getPublishedOn().minusHours(1))) {
-                    throw new ValidationRequestException("Cannot publish the event because it's after 1 hour before event datetime");
+                if (event.getPublishedOn()
+                        != null && event.getEventDate().isAfter(event.getPublishedOn().minusHours(1))) {
+                    throw new ValidationRequestException("Cannot publish the event because it's after 1 hour" +
+                            " before event datetime");
                 }
                 event.setPublishedOn(LocalDateTime.now());
                 event.setState(EventState.PUBLISHED);
@@ -165,7 +172,8 @@ public class EventServiceImpl implements EventService {
         if (updateEventAdminRequestDto.getEventDate() != null
                 && LocalDateTime.parse(updateEventAdminRequestDto.getEventDate(), formatter)
                 .isBefore(LocalDateTime.now().plusHours(2))) {
-            throw new ValidationRequestException(String.format("Event date must not be before 2 hours from current time. New value: %s",
+            throw new ValidationRequestException(String.format("Event date must not be before 2 hours from current" +
+                            " time. New value: %s",
                     updateEventAdminRequestDto.getEventDate()));
         }
         if (updateEventAdminRequestDto.getTitle() != null) {
@@ -209,8 +217,8 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventFullDto> getEventsByAdmin(List<Long> users, List<String> states, List<Long> categories,
                                                String rangeStart, String rangeEnd, int from, int size) {
-        log.info("Search for events by parameters: user_ids = " + users + ", states = " + states + ", categories = " + categories +
-                ", rangeStart = " + rangeStart + ", rangeEnd = " + rangeEnd);
+        log.info("Search for events by parameters: user_ids = " + users + ", states = " + states
+                + ", categories = " + categories + ", rangeStart = " + rangeStart + ", rangeEnd = " + rangeEnd);
         validateEventStates(states);
         List<Event> events = eventRepository.findEvents(users,
                 states, categories,
@@ -225,8 +233,8 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<EventShortDto> getPublishedEvents(String text, List<Long> categories, Boolean paid, String rangeStart,
-                                                  String rangeEnd, boolean onlyAvailable, String sort, int from, int size,
-                                                  HttpServletRequest request) {
+                                                  String rangeEnd, boolean onlyAvailable, String sort, int from,
+                                                  int size, HttpServletRequest request) {
         log.info("Search for published events by parameters: text = " + text + ", categories = " + categories +
                 ", paid = " + paid + ", rangeStart = " + rangeStart + ", rangeEnd = " + rangeEnd +
                 ", onlyAvailable = " + onlyAvailable + ", sort = " + sort + ", from = " + from +

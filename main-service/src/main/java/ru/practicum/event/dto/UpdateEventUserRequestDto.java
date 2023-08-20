@@ -27,7 +27,7 @@ public class UpdateEventUserRequestDto {
     @Size(min = 20, max = 7000)
     private String description; // Новое описание
     private String eventDate; // Новые дата и время на которые намечено событие.
-                              // Дата и время указываются в формате "yyyy-MM-dd HH:mm:ss"
+    // Дата и время указываются в формате "yyyy-MM-dd HH:mm:ss"
     private LocationDto location; // Широта и долгота места проведения события
     private Boolean paid; // Новое значение флага о платности мероприятия
     private Integer participantLimit; // Новый лимит пользователей

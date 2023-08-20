@@ -19,8 +19,8 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     Event findFirstByCategoryId(Long catId);
 
-    @Query(value = "SELECT * FROM Events e WHERE (:userId is null or e.initiator_id IN (cast(cast(:userId AS TEXT) AS BIGINT))) "
-            + "and (:states is null or e.state IN (cast(:states AS text))) "
+    @Query(value = "SELECT * FROM Events e WHERE (:userId is null or e.initiator_id IN (cast(cast(:userId AS TEXT)"
+            + " AS BIGINT))) and (:states is null or e.state IN (cast(:states AS text))) "
             + "and (:categories is null or e.category_id IN (cast(cast(:categories AS TEXT) AS BIGINT))) "
             + "and (cast(:rangeStart AS timestamp) is null or e.event_date >= cast(:rangeStart AS timestamp))"
             + "and (cast(:rangeEnd AS timestamp) is null or e.event_date < cast(:rangeEnd AS timestamp))",

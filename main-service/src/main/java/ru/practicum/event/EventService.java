@@ -20,8 +20,9 @@ public interface EventService {
     List<EventFullDto> getEventsByAdmin(List<Long> users, List<String> states, List<Long> categories, String rangeStart,
                                         String rangeEnd, int from, int size);
 
-    List<EventShortDto> getPublishedEvents(String text, List<Long> categories, Boolean paid, String rangeStart, String rangeEnd,
-                                           boolean onlyAvailable, String sort, int from, int size, HttpServletRequest request);
+    List<EventShortDto> getPublishedEvents(String text, List<Long> categories, Boolean paid, String rangeStart,
+                                           String rangeEnd, boolean onlyAvailable, String sort, int from, int size,
+                                           HttpServletRequest request);
 
     EventFullDto getPublishedEventById(Long eventId, HttpServletRequest request);
 }

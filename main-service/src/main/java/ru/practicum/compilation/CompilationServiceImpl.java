@@ -28,7 +28,8 @@ public class CompilationServiceImpl implements CompilationService {
 
     @Override
     public List<CompilationDto> getCompilations(Boolean pinned, int from, int size) {
-        log.info("Getting collections of events by parameters: pinned = " + pinned + ", from = " + from + ", size = " + size);
+        log.info("Getting collections of events by parameters: pinned = " + pinned + ", from = " + from
+                + ", size = " + size);
         List<Compilation> compilations;
         if (pinned != null) {
             compilations = compilationRepository.findByPinned(pinned, PageRequest.of(from / size, size));
@@ -58,8 +59,10 @@ public class CompilationServiceImpl implements CompilationService {
 
     @Override
     public CompilationDto updateCompilation(Long compId, UpdateCompilationRequestDto updateCompilationRequestDto) {
-        log.info("Updating information about compilation: comp_id = " + compId + ", update_compilation = " + updateCompilationRequestDto);
-        Compilation compilation = compilationRepository.findById(compId).orElseThrow(() -> new CompilationNotFoundException(compId));
+        log.info("Updating information about compilation: comp_id = " + compId + ", update_compilation = "
+                + updateCompilationRequestDto);
+        Compilation compilation = compilationRepository.findById(compId).orElseThrow(() ->
+                new CompilationNotFoundException(compId));
         if (updateCompilationRequestDto.getTitle() != null) {
             String title = updateCompilationRequestDto.getTitle();
             if (title.isEmpty() || title.length() > 50) {
