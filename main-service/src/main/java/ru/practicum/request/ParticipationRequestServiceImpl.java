@@ -3,6 +3,7 @@ package ru.practicum.request;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.event.Event;
 import ru.practicum.event.EventRepository;
 import ru.practicum.event.EventState;
@@ -16,7 +17,6 @@ import ru.practicum.request.dto.ParticipationRequestMapper;
 import ru.practicum.user.User;
 import ru.practicum.user.UserRepository;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,20 +28,19 @@ import static ru.practicum.request.dto.ParticipationRequestMapper.toParticipatio
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional(readOnly = true)
 public class ParticipationRequestServiceImpl implements ParticipationRequestService {
     private final ParticipationRequestRepository participationRequestRepository;
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
 
     @Override
+    @Transactional
     public ParticipationRequestDto createParticipationRequest(Long userId, Long eventId) {
         log.info("Adding a request from the current user to participate in the event: user_id = " + userId
                 + ", event_id = " + eventId);
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-
-        //Event event = eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException(eventId));
-        Event event = eventRepository.findByIdAndParticipantLimit(eventId).orElseThrow(() -> new EventNotFoundException(eventId));
-
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException(eventId));
         ParticipationRequest existParticipationRequest = participationRequestRepository
                 .findByRequesterIdAndEventId(userId, eventId);
         if (existParticipationRequest != null) {
@@ -78,6 +77,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     }
 
     @Override
+    @Transactional
     public ParticipationRequestDto cancelParticipationRequest(Long userId, Long requestId) {
         log.info("Cancellation of your request to participate in the event: user_id = " + userId + ", request_id = "
                 + requestId);
@@ -121,7 +121,9 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
         log.info("Changing the status (confirmed, canceled) of applications for participation in the event of the" +
                 " current user: user_id = " + userId + ", event_id = " + eventId + ", новый статус = "
                 + eventRequestStatusUpdateRequest);
-        userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        if (!userRepository.existsById(userId)) {
+            throw new UserNotFoundException(userId);
+        }
         Event event = eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException(eventId));
         List<ParticipationRequest> requests = participationRequestRepository
                 .findAllById(eventRequestStatusUpdateRequest.getRequestIds());

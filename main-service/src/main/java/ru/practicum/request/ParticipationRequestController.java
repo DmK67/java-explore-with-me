@@ -2,6 +2,7 @@ package ru.practicum.request;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.request.dto.EventRequestStatusUpdateRequestDto;
 import ru.practicum.request.dto.EventRequestStatusUpdateResultDto;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Validated
 public class ParticipationRequestController {
     private final ParticipationRequestService participationRequestService;
 
@@ -79,8 +81,8 @@ public class ParticipationRequestController {
      */
     @GetMapping("/users/{userId}/events/{eventId}/requests")
     public List<ParticipationRequestDto> getParticipationRequestsForUserEvent(
-            @PathVariable @Valid @Positive Long userId,
-            @PathVariable @Valid @Positive Long eventId) {
+            @PathVariable @Positive Long userId,
+            @PathVariable @Positive Long eventId) {
         return participationRequestService.getParticipationRequestsForUserEvent(userId, eventId);
     }
 
@@ -103,8 +105,8 @@ public class ParticipationRequestController {
      */
     @PatchMapping("/users/{userId}/events/{eventId}/requests")
     public EventRequestStatusUpdateResultDto changeParticipationRequestsStatus(
-            @PathVariable @Valid @Positive Long userId,
-            @PathVariable @Valid @Positive Long eventId,
+            @PathVariable @Positive Long userId,
+            @PathVariable @Positive Long eventId,
             @RequestBody EventRequestStatusUpdateRequestDto eventRequestStatusUpdateRequest) {
         return participationRequestService.changeParticipationRequestsStatus(userId, eventId,
                 eventRequestStatusUpdateRequest);

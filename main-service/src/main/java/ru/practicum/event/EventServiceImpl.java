@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.HitDto;
 import ru.practicum.StatsClient;
 import ru.practicum.StatsDto;
@@ -38,6 +39,7 @@ public class EventServiceImpl implements EventService {
     private final StatsClient statsClient;
 
     @Override
+    @Transactional
     public EventFullDto createEvent(Long userId, NewEventDto newEventDto) {
         log.info("Adding a new event: user_id = " + userId + ", event = " + newEventDto);
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
@@ -77,6 +79,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public EventFullDto updateEventByUser(Long userId, Long eventId,
                                           UpdateEventUserRequestDto updateEventUserRequestDto) {
         log.info("Updating event information: user_id = " + userId + ", event_id = " + eventId +
@@ -140,6 +143,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public EventFullDto updateEventByAdmin(Long eventId, UpdateEventAdminRequestDto updateEventAdminRequestDto) {
         log.info("updating information about the event by the administrator: event_id = " + eventId
                 + ", update_event = " + updateEventAdminRequestDto);
@@ -327,4 +331,5 @@ public class EventServiceImpl implements EventService {
         }
         return hits;
     }
+
 }

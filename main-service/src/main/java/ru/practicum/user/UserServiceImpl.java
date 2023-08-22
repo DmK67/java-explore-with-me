@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.user.dto.NewUserRequestDto;
 import ru.practicum.user.dto.UserDto;
 
@@ -15,6 +16,7 @@ import static ru.practicum.user.dto.UserMapper.toUserDto;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
@@ -28,11 +30,13 @@ public class UserServiceImpl implements UserService {
         return toUserDto(userRepository.findAll(PageRequest.of(from / size, size)));
     }
 
+    @Transactional
     public UserDto createUser(NewUserRequestDto newUserRequestDto) {
         log.info("Creating a new user: " + newUserRequestDto);
         return toUserDto(userRepository.save(toUser(newUserRequestDto)));
     }
 
+    @Transactional
     public void deleteUser(Long id) {
         log.info("Deleting a user with an ID = " + id);
         userRepository.deleteById(id);

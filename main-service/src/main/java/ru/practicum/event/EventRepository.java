@@ -52,8 +52,8 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     Optional<Event> findByIdAndState(Long eventId, EventState state);
 
-    @Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
-    @Query("SELECT e FROM Event e WHERE e.id =?1 and e.participantLimit = ?2")
-    Event findByIdWithLock(Long id, int participantLimit);
+//    @Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
+//    @Query("SELECT e FROM Event e WHERE e.id =?1 and e.participantLimit = ?2")
+//    Event findByIdWithLock(Long id, int participantLimit);
 
 }
