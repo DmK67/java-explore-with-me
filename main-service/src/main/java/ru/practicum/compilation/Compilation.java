@@ -4,7 +4,7 @@ import lombok.*;
 import ru.practicum.event.Event;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -24,7 +24,8 @@ public class Compilation {
             name = "event_compilation",
             joinColumns = @JoinColumn(name = "compilation_id"),
             inverseJoinColumns = @JoinColumn(name = "event_id"))
-    private List<Event> events;
+    private Set<Event> events;
+
     private boolean pinned;
 
     @Column(nullable = false, length = 50)

@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Validated
 public class EventController {
     private final EventService eventService;
 
@@ -45,7 +46,7 @@ public class EventController {
      * 400 - Запрос составлен некорректно.
      */
     @GetMapping("/users/{userId}/events")
-    public List<EventShortDto> getEvents(@PathVariable @Valid @Positive Long userId,
+    public List<EventShortDto> getEvents(@PathVariable @Positive Long userId,
                                          @RequestParam(defaultValue = "0") @PositiveOrZero int from,
                                          @RequestParam(defaultValue = "10") @Positive int size) {
         return eventService.getEvents(userId, from, size);
@@ -62,8 +63,8 @@ public class EventController {
      * 404 - Событие не найдено или недоступно
      */
     @GetMapping("/users/{userId}/events/{eventId}")
-    public EventFullDto getEventById(@PathVariable @Valid @Positive Long userId,
-                                     @PathVariable @Valid @Positive Long eventId) {
+    public EventFullDto getEventById(@PathVariable @Positive Long userId,
+                                     @PathVariable @Positive Long eventId) {
         return eventService.getEventById(userId, eventId);
     }
 
@@ -83,8 +84,8 @@ public class EventController {
      * 409 - Событие не удовлетворяет правилам редактирования
      */
     @PatchMapping("/users/{userId}/events/{eventId}")
-    public EventFullDto updateEventByUser(@PathVariable @Valid @Positive Long userId,
-                                          @PathVariable @Valid @Positive Long eventId,
+    public EventFullDto updateEventByUser(@PathVariable @Positive Long userId,
+                                          @PathVariable @Positive Long eventId,
                                           @RequestBody @Validated UpdateEventUserRequestDto updateEventUserRequestDto) {
         return eventService.updateEventByUser(userId, eventId, updateEventUserRequestDto);
     }
@@ -110,8 +111,8 @@ public class EventController {
                                                @RequestParam(required = false) List<Long> categories,
                                                @RequestParam(required = false) String rangeStart,
                                                @RequestParam(required = false) String rangeEnd,
-                                               @RequestParam(defaultValue = "0") int from,
-                                               @RequestParam(defaultValue = "10") int size) {
+                                               @RequestParam(defaultValue = "0") @PositiveOrZero int from,
+                                               @RequestParam(defaultValue = "10") @Positive int size) {
         return eventService.getEventsByAdmin(users, states, categories, rangeStart, rangeEnd, from, size);
     }
 
@@ -130,7 +131,7 @@ public class EventController {
      */
     @PatchMapping("/admin/events/{eventId}")
     public EventFullDto updateEventByAdmin(
-            @PathVariable @Valid @Positive Long eventId,
+            @PathVariable @Positive Long eventId,
             @RequestBody @Validated UpdateEventAdminRequestDto updateEventAdminRequestDto) {
         return eventService.updateEventByAdmin(eventId, updateEventAdminRequestDto);
     }
@@ -167,8 +168,8 @@ public class EventController {
                                                   @RequestParam(required = false) String rangeEnd,
                                                   @RequestParam(defaultValue = "false") boolean onlyAvailable,
                                                   @RequestParam(required = false) String sort,
-                                                  @RequestParam(defaultValue = "0") int from,
-                                                  @RequestParam(defaultValue = "10") int size,
+                                                  @RequestParam(defaultValue = "0") @PositiveOrZero int from,
+                                                  @RequestParam(defaultValue = "10") @Positive int size,
                                                   HttpServletRequest request) {
         return eventService.getPublishedEvents(text, categories, paid, rangeStart, rangeEnd, onlyAvailable,
                 sort, from, size, request);
@@ -188,7 +189,7 @@ public class EventController {
      * 404 - Событие не найдено или недоступно
      */
     @GetMapping("/events/{id}")
-    public EventFullDto getPublishedEventById(@PathVariable @Valid @Positive Long id,
+    public EventFullDto getPublishedEventById(@PathVariable @Positive Long id,
                                               HttpServletRequest request) {
         return eventService.getPublishedEventById(id, request);
     }

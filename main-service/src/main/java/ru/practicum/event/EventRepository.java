@@ -2,12 +2,15 @@ package ru.practicum.event;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import javax.persistence.LockModeType;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
 
@@ -15,7 +18,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     List<Event> findByIdAndInitiatorId(Long eventId, Long userId);
 
-    List<Event> findByIdIn(List<Long> eventIds);
+    Set<Event> findByIdIn(List<Long> eventIds);
 
     Event findFirstByCategoryId(Long catId);
 
@@ -48,4 +51,9 @@ public interface EventRepository extends JpaRepository<Event, Long> {
                                     Pageable pageable);
 
     Optional<Event> findByIdAndState(Long eventId, EventState state);
+
+    @Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
+    @Query("SELECT e FROM Event e WHERE e.id =?1 and e.participantLimit = ?2")
+    Event findByIdWithLock(Long id, int participantLimit);
+
 }

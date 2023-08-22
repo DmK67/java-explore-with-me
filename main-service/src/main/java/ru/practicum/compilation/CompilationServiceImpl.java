@@ -12,7 +12,6 @@ import ru.practicum.event.EventRepository;
 import ru.practicum.exceptions.CompilationNotFoundException;
 import ru.practicum.exceptions.ValidationRequestException;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,8 +35,8 @@ public class CompilationServiceImpl implements CompilationService {
         } else {
             compilations = compilationRepository.findAll(PageRequest.of(from / size, size)).getContent();
         }
-        return !compilations.isEmpty() ? compilations.stream().map(CompilationMapper::toCompilationDto)
-                .collect(Collectors.toList()) : Collections.emptyList();
+        return compilations.stream().map(CompilationMapper::toCompilationDto)
+                .collect(Collectors.toList());
     }
 
     @Override

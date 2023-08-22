@@ -10,6 +10,7 @@ import ru.practicum.user.User;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -66,7 +67,7 @@ public class Event {
     private EventState state;
 
     @ManyToMany(mappedBy = "events")
-    private List<Compilation> compilations;
+    private Set<Compilation> compilations;
 
     @OneToMany(mappedBy = "event")
     private List<ParticipationRequest> requests;

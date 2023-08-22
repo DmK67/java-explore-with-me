@@ -38,7 +38,10 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
         log.info("Adding a request from the current user to participate in the event: user_id = " + userId
                 + ", event_id = " + eventId);
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        Event event = eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException(eventId));
+
+        //Event event = eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException(eventId));
+        Event event = eventRepository.findByIdAndParticipantLimit(eventId).orElseThrow(() -> new EventNotFoundException(eventId));
+
         ParticipationRequest existParticipationRequest = participationRequestRepository
                 .findByRequesterIdAndEventId(userId, eventId);
         if (existParticipationRequest != null) {

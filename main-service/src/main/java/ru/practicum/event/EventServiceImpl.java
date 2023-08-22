@@ -113,9 +113,6 @@ public class EventServiceImpl implements EventService {
         }
         if (updateEventUserRequestDto.getLocation() != null) {
             Location location = event.getLocation();
-            location.setLat(updateEventUserRequestDto.getLocation().getLat());
-            location.setLon(updateEventUserRequestDto.getLocation().getLon());
-            event.setLocation(location);
             locationRepository.save(location);
         }
         if (updateEventUserRequestDto.getPaid() != null) {
@@ -194,9 +191,6 @@ public class EventServiceImpl implements EventService {
         }
         if (updateEventAdminRequestDto.getLocation() != null) {
             Location location = event.getLocation();
-            location.setLat(updateEventAdminRequestDto.getLocation().getLat());
-            location.setLon(updateEventAdminRequestDto.getLocation().getLon());
-            event.setLocation(location);
             locationRepository.save(location);
         }
         if (updateEventAdminRequestDto.getPaid() != null) {
