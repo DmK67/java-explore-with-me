@@ -11,8 +11,18 @@ import java.util.List;
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class CompilationDto {
+
     private Long id;
+
     private List<EventShortDto> events;
-    private Boolean pinned; // Закреплена ли подборка на главной странице сайта
-    private String title; // Заголовок подборки
+
+    /**
+     * Закреплена ли подборка на главной странице сайта
+     */
+    private Boolean pinned;
+
+    /**
+     * Заголовок подборки
+     */
+    private String title;
 }

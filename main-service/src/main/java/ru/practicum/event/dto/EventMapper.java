@@ -13,6 +13,7 @@ import static ru.practicum.location.dto.LocationMapper.toLocation;
 import static ru.practicum.location.dto.LocationMapper.toLocationDto;
 import static ru.practicum.user.dto.UserMapper.toUserShortDto;
 
+//@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class EventMapper {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 

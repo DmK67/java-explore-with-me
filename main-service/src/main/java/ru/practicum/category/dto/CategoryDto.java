@@ -2,10 +2,6 @@ package ru.practicum.category.dto;
 
 import lombok.*;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -13,9 +9,13 @@ import javax.validation.constraints.Size;
 @Setter
 public class CategoryDto {
 
-    private Long id; // Идентификатор категории
-    @Size(min = 1, max = 50)
-    @NotNull
-    @NotBlank
-    private String name; // Название категории
+    /**
+     * Идентификатор категории
+     */
+    private Long id;
+
+    /**
+     * Название категории
+     */
+    private String name;
 }

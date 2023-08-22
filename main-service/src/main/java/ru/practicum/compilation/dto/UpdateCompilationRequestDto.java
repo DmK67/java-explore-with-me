@@ -14,7 +14,19 @@ import java.util.List;
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class UpdateCompilationRequestDto {
-    private List<Long> events; // Список id событий подборки для полной замены текущего списка
-    private Boolean pinned; // Закреплена ли подборка на главной странице сайта
-    private String title; // Заголовок подборки
+
+    /**
+     * Список id событий подборки для полной замены текущего списка
+     */
+    private List<Long> events;
+
+    /**
+     * Закреплена ли подборка на главной странице сайта
+     */
+    private Boolean pinned;
+
+    /**
+     * Заголовок подборки
+     */
+    private String title;
 }

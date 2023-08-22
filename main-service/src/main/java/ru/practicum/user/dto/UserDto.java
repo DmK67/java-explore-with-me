@@ -9,9 +9,18 @@ import lombok.*;
 @AllArgsConstructor
 public class UserDto {
 
-    private Long id; // Идентификатор
+    /**
+     * Идентификатор
+     */
+    private Long id;
 
-    private String name; // Имя
+    /**
+     * Имя
+     */
+    private String name;
 
-    private String email; // Почтовый адрес(e-mail)
+    /**
+     * Почтовый адрес(e-mail)
+     */
+    private String email;
 }

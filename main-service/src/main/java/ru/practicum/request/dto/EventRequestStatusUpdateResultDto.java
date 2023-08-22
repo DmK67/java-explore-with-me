@@ -10,6 +10,14 @@ import java.util.List;
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class EventRequestStatusUpdateResultDto {
-    private List<ParticipationRequestDto> confirmedRequests; // Заявки на участие в событии
-    private List<ParticipationRequestDto> rejectedRequests; // Заявки на участие в событии
+
+    /**
+     * Заявки на участие в событии
+     */
+    private List<ParticipationRequestDto> confirmedRequests;
+
+    /**
+     * Заявки на участие в событии
+     */
+    private List<ParticipationRequestDto> rejectedRequests;
 }
