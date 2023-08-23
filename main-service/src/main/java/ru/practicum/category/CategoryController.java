@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Validated
 public class CategoryController {
     private final CategoryService categoryService;
 

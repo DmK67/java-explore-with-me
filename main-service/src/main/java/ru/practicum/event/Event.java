@@ -73,5 +73,6 @@ public class Event {
     private List<ParticipationRequest> requests;
 
     @Column(columnDefinition = "bigint default 0")
+    //@Transient
     private Long views;
 }

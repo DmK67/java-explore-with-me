@@ -1,5 +1,7 @@
 package ru.practicum.event.dto;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import ru.practicum.event.Event;
 import ru.practicum.request.ParticipationRequest;
 import ru.practicum.request.ParticipationRequestStatus;
@@ -13,12 +15,9 @@ import static ru.practicum.location.dto.LocationMapper.toLocation;
 import static ru.practicum.location.dto.LocationMapper.toLocationDto;
 import static ru.practicum.user.dto.UserMapper.toUserShortDto;
 
-//@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class EventMapper {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-    private EventMapper() {
-    }
 
     public static Event toEvent(NewEventDto newEventDto) {
         return Event.builder()

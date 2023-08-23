@@ -1,13 +1,13 @@
 package ru.practicum.request.dto;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import ru.practicum.request.ParticipationRequest;
 
 import java.time.format.DateTimeFormatter;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ParticipationRequestMapper {
-
-    private ParticipationRequestMapper() {
-    }
 
     public static ParticipationRequestDto toParticipationRequestDto(ParticipationRequest request) {
         return ParticipationRequestDto.builder()

@@ -1,16 +1,15 @@
 package ru.practicum.compilation.dto;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import ru.practicum.compilation.Compilation;
 import ru.practicum.event.dto.EventMapper;
 
 import java.util.Collections;
 import java.util.stream.Collectors;
 
-
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CompilationMapper {
-
-    private CompilationMapper() {
-    }
 
     public static CompilationDto toCompilationDto(Compilation compilation) {
         return CompilationDto.builder()
