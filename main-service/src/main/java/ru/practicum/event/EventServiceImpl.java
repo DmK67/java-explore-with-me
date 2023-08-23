@@ -285,6 +285,9 @@ public class EventServiceImpl implements EventService {
         log.info("Getting information about a published event by ID: event_id = " + eventId);
         Event event = eventRepository.findByIdAndState(eventId, EventState.PUBLISHED)
                 .orElseThrow(() -> new EventNotFoundException(eventId));
+
+        event.setViews(event.getViews() != null ? event.getViews() : 0L);
+
         Integer countHits = getCountHits(request);
         statsClient.addHit(HitDto.builder()
                 .app("ewm-main-service")
@@ -293,11 +296,12 @@ public class EventServiceImpl implements EventService {
                 .timestamp(LocalDateTime.now().format(formatter))
                 .build());
         Integer newCountHits = getCountHits(request);
-        if (newCountHits != null && newCountHits > countHits) {
-            event.setViews(event.getViews() + 1);
-            eventRepository.save(event);
+        if (newCountHits != null && newCountHits >= countHits) {
+            event.setViews(Long.valueOf(newCountHits));
         }
-        return toEventFullDto(event);
+        EventFullDto eventFullDto = toEventFullDto(event);
+        eventFullDto.setViews(getCountHits(request));
+        return eventFullDto;
     }
 
     private void validateEventStates(List<String> states) {

@@ -45,7 +45,7 @@ public class Event {
     @JoinColumn(name = "location_id")
     private Location location;
 
-    private boolean paid;
+    private Boolean paid;
 
     @Column(name = "participant_limit")
     private int participantLimit;
@@ -72,7 +72,7 @@ public class Event {
     @OneToMany(mappedBy = "event")
     private List<ParticipationRequest> requests;
 
-    @Column(columnDefinition = "bigint default 0")
-    //@Transient
+    //@Column(columnDefinition = "bigint default 0")
+    @Transient
     private Long views;
 }

@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS events
     published_on       TIMESTAMP WITHOUT TIME ZONE,
     initiator_id       BIGINT,
     state              VARCHAR(10) DEFAULT 'PENDING',
-    views              BIGINT      DEFAULT 0,
+    --views              BIGINT      DEFAULT 0,
     CONSTRAINT pk_event PRIMARY KEY (id),
     CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories (id),
     CONSTRAINT fk_location FOREIGN KEY (location_id) REFERENCES locations (id),

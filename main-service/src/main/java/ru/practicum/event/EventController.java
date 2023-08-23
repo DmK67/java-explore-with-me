@@ -30,7 +30,7 @@ public class EventController {
      */
     @PostMapping("/users/{userId}/events")
     @ResponseStatus(HttpStatus.CREATED)
-    public EventFullDto createEvent(@PathVariable @Valid @Positive Long userId,
+    public EventFullDto createEvent(@PathVariable @Positive Long userId,
                                     @RequestBody @Validated NewEventDto newEventDto) {
         return eventService.createEvent(userId, newEventDto);
     }
@@ -191,7 +191,9 @@ public class EventController {
     @GetMapping("/events/{id}")
     public EventFullDto getPublishedEventById(@PathVariable @Positive Long id,
                                               HttpServletRequest request) {
-        return eventService.getPublishedEventById(id, request);
+        EventFullDto e = eventService.getPublishedEventById(id, request);
+        //return eventService.getPublishedEventById(id, request);
+    return e;
     }
 }
 
