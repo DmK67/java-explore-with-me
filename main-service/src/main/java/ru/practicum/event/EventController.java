@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.event.dto.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
@@ -171,8 +170,10 @@ public class EventController {
                                                   @RequestParam(defaultValue = "0") @PositiveOrZero int from,
                                                   @RequestParam(defaultValue = "10") @Positive int size,
                                                   HttpServletRequest request) {
+        String reqUrl = request.getRequestURL().toString();
+        String reqIp = request.getRemoteAddr();
         return eventService.getPublishedEvents(text, categories, paid, rangeStart, rangeEnd, onlyAvailable,
-                sort, from, size, request);
+                sort, from, size, reqUrl, reqIp);
     }
 
     /**
@@ -191,9 +192,7 @@ public class EventController {
     @GetMapping("/events/{id}")
     public EventFullDto getPublishedEventById(@PathVariable @Positive Long id,
                                               HttpServletRequest request) {
-        EventFullDto e = eventService.getPublishedEventById(id, request);
-        //return eventService.getPublishedEventById(id, request);
-    return e;
+        return eventService.getPublishedEventById(id, request);
     }
 }
 

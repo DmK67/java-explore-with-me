@@ -97,49 +97,7 @@ public class EventServiceImpl implements EventService {
                             " time. New value: %s",
                     updateEventUserRequestDto.getEventDate()));
         }
-        if (updateEventUserRequestDto.getTitle() != null) {
-            event.setTitle(updateEventUserRequestDto.getTitle());
-        }
-        if (updateEventUserRequestDto.getAnnotation() != null) {
-            event.setAnnotation(updateEventUserRequestDto.getAnnotation());
-        }
-        if (updateEventUserRequestDto.getCategory() != null) {
-            event.setCategory(categoryRepository.findById(updateEventUserRequestDto.getCategory())
-                    .orElseThrow(() -> new CategoryNotFoundException(updateEventUserRequestDto.getCategory())));
-        }
-        if (updateEventUserRequestDto.getDescription() != null) {
-            event.setDescription(updateEventUserRequestDto.getDescription());
-        }
-        if (updateEventUserRequestDto.getEventDate() != null) {
-            event.setEventDate(LocalDateTime.parse(updateEventUserRequestDto.getEventDate(),
-                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        }
-        if (updateEventUserRequestDto.getLocation() != null) {
-            Location location = event.getLocation();
-            locationRepository.save(location);
-        }
-        if (updateEventUserRequestDto.getPaid() != null) {
-            event.setPaid(updateEventUserRequestDto.getPaid());
-        }
-        if (updateEventUserRequestDto.getParticipantLimit() != null) {
-            event.setParticipantLimit(updateEventUserRequestDto.getParticipantLimit());
-        }
-        if (updateEventUserRequestDto.getRequestModeration() != null) {
-            event.setRequestModeration(updateEventUserRequestDto.getRequestModeration());
-        }
-        if (updateEventUserRequestDto.getParticipantLimit() != null) {
-            event.setParticipantLimit(updateEventUserRequestDto.getParticipantLimit());
-        }
-        if (updateEventUserRequestDto.getStateAction() == null) {
-            return toEventFullDto(eventRepository.save(event));
-        }
-        if (updateEventUserRequestDto.getStateAction() == StateUserAction.CANCEL_REVIEW) {
-            event.setState(EventState.CANCELED);
-        }
-        if (updateEventUserRequestDto.getStateAction() == StateUserAction.SEND_TO_REVIEW) {
-            event.setState(EventState.PENDING);
-        }
-        return toEventFullDto(eventRepository.save(event));
+        return updateEventUser(event, updateEventUserRequestDto);
     }
 
     @Override
@@ -177,39 +135,7 @@ public class EventServiceImpl implements EventService {
                             " time. New value: %s",
                     updateEventAdminRequestDto.getEventDate()));
         }
-        if (updateEventAdminRequestDto.getTitle() != null) {
-            event.setTitle(updateEventAdminRequestDto.getTitle());
-        }
-        if (updateEventAdminRequestDto.getAnnotation() != null) {
-            event.setAnnotation(updateEventAdminRequestDto.getAnnotation());
-        }
-        if (updateEventAdminRequestDto.getCategory() != null) {
-            event.setCategory(categoryRepository.findById(updateEventAdminRequestDto.getCategory())
-                    .orElseThrow(() -> new CategoryNotFoundException(updateEventAdminRequestDto.getCategory())));
-        }
-        if (updateEventAdminRequestDto.getDescription() != null) {
-            event.setDescription(updateEventAdminRequestDto.getDescription());
-        }
-        if (updateEventAdminRequestDto.getEventDate() != null) {
-            event.setEventDate(LocalDateTime.parse(updateEventAdminRequestDto.getEventDate(), formatter));
-        }
-        if (updateEventAdminRequestDto.getLocation() != null) {
-            Location location = event.getLocation();
-            locationRepository.save(location);
-        }
-        if (updateEventAdminRequestDto.getPaid() != null) {
-            event.setPaid(updateEventAdminRequestDto.getPaid());
-        }
-        if (updateEventAdminRequestDto.getParticipantLimit() != null) {
-            event.setParticipantLimit(updateEventAdminRequestDto.getParticipantLimit());
-        }
-        if (updateEventAdminRequestDto.getRequestModeration() != null) {
-            event.setRequestModeration(updateEventAdminRequestDto.getRequestModeration());
-        }
-        if (updateEventAdminRequestDto.getParticipantLimit() != null) {
-            event.setParticipantLimit(updateEventAdminRequestDto.getParticipantLimit());
-        }
-        return toEventFullDto(eventRepository.save(event));
+        return updateEventAdmin(event, updateEventAdminRequestDto);
     }
 
     @Override
@@ -232,17 +158,17 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventShortDto> getPublishedEvents(String text, List<Long> categories, Boolean paid, String rangeStart,
                                                   String rangeEnd, boolean onlyAvailable, String sort, int from,
-                                                  int size, HttpServletRequest request) {
+                                                  int size, String reqUrl, String reqIp) {
         log.info("Search for published events by parameters: text = " + text + ", categories = " + categories +
                 ", paid = " + paid + ", rangeStart = " + rangeStart + ", rangeEnd = " + rangeEnd +
                 ", onlyAvailable = " + onlyAvailable + ", sort = " + sort + ", from = " + from +
                 ", size = " + size);
-        log.info("Client ip: {}", request.getRemoteAddr());
-        log.info("Endpoint path: {}", request.getRequestURI());
+        log.info("Client ip: {}", reqIp);
+        log.info("Endpoint path: {}", reqUrl);
         statsClient.addHit(HitDto.builder()
                 .app("ewm-main-service")
-                .uri(request.getRequestURI())
-                .ip(request.getRemoteAddr())
+                .uri(reqUrl)
+                .ip(reqIp)
                 .timestamp(LocalDateTime.now().format(formatter))
                 .build());
         if (rangeStart != null && rangeEnd != null &&
@@ -302,6 +228,90 @@ public class EventServiceImpl implements EventService {
         EventFullDto eventFullDto = toEventFullDto(event);
         eventFullDto.setViews(getCountHits(request));
         return eventFullDto;
+    }
+
+    private EventFullDto updateEventAdmin(Event event, UpdateEventAdminRequestDto updateEventAdminRequestDto) {
+        if (updateEventAdminRequestDto.getTitle() != null) {
+            event.setTitle(updateEventAdminRequestDto.getTitle());
+        }
+        if (updateEventAdminRequestDto.getAnnotation() != null) {
+            event.setAnnotation(updateEventAdminRequestDto.getAnnotation());
+        }
+        if (updateEventAdminRequestDto.getCategory() != null) {
+            event.setCategory(categoryRepository.findById(updateEventAdminRequestDto.getCategory())
+                    .orElseThrow(() -> new CategoryNotFoundException(updateEventAdminRequestDto.getCategory())));
+        }
+        if (updateEventAdminRequestDto.getDescription() != null) {
+            event.setDescription(updateEventAdminRequestDto.getDescription());
+        }
+        if (updateEventAdminRequestDto.getEventDate() != null) {
+            event.setEventDate(LocalDateTime.parse(updateEventAdminRequestDto.getEventDate(), formatter));
+        }
+        if (updateEventAdminRequestDto.getLocation() != null) {
+            Location location = event.getLocation();
+            location.setLat(updateEventAdminRequestDto.getLocation().getLat());
+            location.setLon(updateEventAdminRequestDto.getLocation().getLon());
+        }
+        if (updateEventAdminRequestDto.getPaid() != null) {
+            event.setPaid(updateEventAdminRequestDto.getPaid());
+        }
+        if (updateEventAdminRequestDto.getParticipantLimit() != null) {
+            event.setParticipantLimit(updateEventAdminRequestDto.getParticipantLimit());
+        }
+        if (updateEventAdminRequestDto.getRequestModeration() != null) {
+            event.setRequestModeration(updateEventAdminRequestDto.getRequestModeration());
+        }
+        if (updateEventAdminRequestDto.getParticipantLimit() != null) {
+            event.setParticipantLimit(updateEventAdminRequestDto.getParticipantLimit());
+        }
+        return toEventFullDto(eventRepository.save(event));
+    }
+
+    private EventFullDto updateEventUser(Event event, UpdateEventUserRequestDto updateEventUserRequestDto) {
+        if (updateEventUserRequestDto.getTitle() != null) {
+            event.setTitle(updateEventUserRequestDto.getTitle());
+        }
+        if (updateEventUserRequestDto.getAnnotation() != null) {
+            event.setAnnotation(updateEventUserRequestDto.getAnnotation());
+        }
+        if (updateEventUserRequestDto.getCategory() != null) {
+            event.setCategory(categoryRepository.findById(updateEventUserRequestDto.getCategory())
+                    .orElseThrow(() -> new CategoryNotFoundException(updateEventUserRequestDto.getCategory())));
+        }
+        if (updateEventUserRequestDto.getDescription() != null) {
+            event.setDescription(updateEventUserRequestDto.getDescription());
+        }
+        if (updateEventUserRequestDto.getEventDate() != null) {
+            event.setEventDate(LocalDateTime.parse(updateEventUserRequestDto.getEventDate(),
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        }
+        if (updateEventUserRequestDto.getLocation() != null) {
+            Location location = event.getLocation();
+            location.setLat(updateEventUserRequestDto.getLocation().getLat());
+            location.setLon(updateEventUserRequestDto.getLocation().getLon());
+        }
+        if (updateEventUserRequestDto.getPaid() != null) {
+            event.setPaid(updateEventUserRequestDto.getPaid());
+        }
+        if (updateEventUserRequestDto.getParticipantLimit() != null) {
+            event.setParticipantLimit(updateEventUserRequestDto.getParticipantLimit());
+        }
+        if (updateEventUserRequestDto.getRequestModeration() != null) {
+            event.setRequestModeration(updateEventUserRequestDto.getRequestModeration());
+        }
+        if (updateEventUserRequestDto.getParticipantLimit() != null) {
+            event.setParticipantLimit(updateEventUserRequestDto.getParticipantLimit());
+        }
+        if (updateEventUserRequestDto.getStateAction() == null) {
+            return toEventFullDto(eventRepository.save(event));
+        }
+        if (updateEventUserRequestDto.getStateAction() == StateUserAction.CANCEL_REVIEW) {
+            event.setState(EventState.CANCELED);
+        }
+        if (updateEventUserRequestDto.getStateAction() == StateUserAction.SEND_TO_REVIEW) {
+            event.setState(EventState.PENDING);
+        }
+        return toEventFullDto(eventRepository.save(event));
     }
 
     private void validateEventStates(List<String> states) {

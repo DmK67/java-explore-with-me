@@ -22,7 +22,7 @@ public interface EventService {
 
     List<EventShortDto> getPublishedEvents(String text, List<Long> categories, Boolean paid, String rangeStart,
                                            String rangeEnd, boolean onlyAvailable, String sort, int from, int size,
-                                           HttpServletRequest request);
+                                           String reqUrl, String reqIp);
 
     EventFullDto getPublishedEventById(Long eventId, HttpServletRequest request);
 }
