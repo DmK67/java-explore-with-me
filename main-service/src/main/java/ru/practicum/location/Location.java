@@ -16,6 +16,14 @@ public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private float lat; // Широта
-    private float lon; // Долгота
+
+    /**
+     * Широта
+     */
+    private float lat;
+
+    /**
+     * Долгота
+     */
+    private float lon;
 }

@@ -25,7 +25,6 @@ import java.time.format.DateTimeFormatter;
         EventController.class,
         ParticipationRequestController.class,
         CompilationController.class})
-//,CommentController.class}) // для для будущей фичи комментариев
 @Slf4j
 public class ErrorHandler {
 

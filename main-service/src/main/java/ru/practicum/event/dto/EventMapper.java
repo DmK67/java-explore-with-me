@@ -8,7 +8,6 @@ import ru.practicum.request.ParticipationRequestStatus;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 import static ru.practicum.category.dto.CategoryMapper.toCategoryDto;
