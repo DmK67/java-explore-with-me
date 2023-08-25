@@ -72,7 +72,6 @@ public class Event {
     @OneToMany(mappedBy = "event")
     private List<ParticipationRequest> requests;
 
-    //@Column(columnDefinition = "bigint default 0")
     @Transient
     private Long views;
 }

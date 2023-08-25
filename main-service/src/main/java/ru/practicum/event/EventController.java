@@ -171,6 +171,8 @@ public class EventController {
                                                   @RequestParam(defaultValue = "10") @Positive int size,
                                                   HttpServletRequest request) {
         String reqUrl = request.getRequestURL().toString();
+        String[] parts = reqUrl.split("/");
+        reqUrl = "/" + parts[parts.length - 1];
         String reqIp = request.getRemoteAddr();
         return eventService.getPublishedEvents(text, categories, paid, rangeStart, rangeEnd, onlyAvailable,
                 sort, from, size, reqUrl, reqIp);

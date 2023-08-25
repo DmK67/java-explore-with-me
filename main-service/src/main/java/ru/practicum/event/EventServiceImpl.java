@@ -166,6 +166,12 @@ public class EventServiceImpl implements EventService {
                 ", size = " + size);
         log.info("Client ip: {}", reqIp);
         log.info("Endpoint path: {}", reqUrl);
+        statsClient.addHit(HitDto.builder()
+                .app("ewm-main-service")
+                .uri(reqUrl)
+                .ip(reqIp)
+                .timestamp(LocalDateTime.now().format(formatter))
+                .build());
         if (rangeStart != null && rangeEnd != null &&
                 LocalDateTime.parse(rangeStart, formatter).isAfter(LocalDateTime.parse(rangeEnd, formatter))) {
             throw new ValidationRequestException("Date start is after date end.");
