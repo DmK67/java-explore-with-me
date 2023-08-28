@@ -212,23 +212,15 @@ public class EventServiceImpl implements EventService {
         log.info("Getting information about a published event by ID: event_id = " + eventId);
         Event event = eventRepository.findByIdAndState(eventId, EventState.PUBLISHED)
                 .orElseThrow(() -> new EventNotFoundException(eventId));
-
-        event.setViews(event.getViews() != null ? event.getViews() : 0L);
-
-        Integer countHits = getCountHits(request);
+        event.setViews(0L);
         statsClient.addHit(HitDto.builder()
                 .app("ewm-main-service")
                 .uri(request.getRequestURI())
                 .ip(request.getRemoteAddr())
                 .timestamp(LocalDateTime.now().format(formatter))
                 .build());
-        Integer newCountHits = getCountHits(request);
-        if (newCountHits != null && newCountHits >= countHits) {
-            event.setViews(Long.valueOf(newCountHits));
-        }
-        EventFullDto eventFullDto = toEventFullDto(event);
-        eventFullDto.setViews(getCountHits(request));
-        return eventFullDto;
+        event.setViews(Long.valueOf(getCountHits(request)));
+        return toEventFullDto(event);
     }
 
     private EventFullDto updateEventAdmin(Event event, UpdateEventAdminRequestDto updateEventAdminRequestDto) {

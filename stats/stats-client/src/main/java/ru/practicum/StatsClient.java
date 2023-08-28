@@ -14,7 +14,7 @@ public class StatsClient {
     private final String serverUrl;
     private final RestTemplate rest;
 
-    public StatsClient(@Value("${app.stats.url:http://stats-server:9090}") String serverUrl) {
+    public StatsClient(@Value("${app.stats.url:http://stats-server:9090}") String serverUrl) { //stats-server localhost
         this.rest = new RestTemplate();
         this.serverUrl = serverUrl;
     }
