@@ -24,5 +24,5 @@ public interface EventService {
                                            String rangeEnd, boolean onlyAvailable, String sort, int from, int size,
                                            String reqUrl, String reqIp);
 
-    EventFullDto getPublishedEventById(Long eventId, HttpServletRequest request);
+    EventFullDto getPublishedEventById(Long eventId, String reqUrl, String reqIp);
 }

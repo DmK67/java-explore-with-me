@@ -194,7 +194,11 @@ public class EventController {
     @GetMapping("/events/{id}")
     public EventFullDto getPublishedEventById(@PathVariable @Positive Long id,
                                               HttpServletRequest request) {
-        return eventService.getPublishedEventById(id, request);
+        String reqUrl = request.getRequestURL().toString();
+        String[] parts = reqUrl.split("/");
+        reqUrl = "/" + parts[parts.length - 2] + "/" + parts[parts.length - 1];
+        String reqIp = request.getRemoteAddr();
+        return eventService.getPublishedEventById(id, reqUrl, reqIp);
     }
 }
 

@@ -208,18 +208,18 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventFullDto getPublishedEventById(Long eventId, HttpServletRequest request) {
+    public EventFullDto getPublishedEventById(Long eventId, String reqUrl, String reqIp) {
         log.info("Getting information about a published event by ID: event_id = " + eventId);
         Event event = eventRepository.findByIdAndState(eventId, EventState.PUBLISHED)
                 .orElseThrow(() -> new EventNotFoundException(eventId));
         event.setViews(0L);
         statsClient.addHit(HitDto.builder()
                 .app("ewm-main-service")
-                .uri(request.getRequestURI())
-                .ip(request.getRemoteAddr())
+                .uri(reqUrl)
+                .ip(reqIp)
                 .timestamp(LocalDateTime.now().format(formatter))
                 .build());
-        event.setViews(Long.valueOf(getCountHits(request)));
+        event.setViews(Long.valueOf(getCountHits(reqUrl, reqIp)));
         return toEventFullDto(event);
     }
 
@@ -318,14 +318,14 @@ public class EventServiceImpl implements EventService {
         }
     }
 
-    private Integer getCountHits(HttpServletRequest request) {
-        log.info("Client ip: {}", request.getRemoteAddr());
-        log.info("Endpoint path: {}", request.getRequestURI());
+    private Integer getCountHits(String reqUrl, String reqIp) {
+        log.info("Client ip: {}", reqIp);
+        log.info("Endpoint path: {}", reqUrl);
 
         ResponseEntity<StatsDto[]> response = statsClient.getStats(
                 LocalDateTime.now().minusYears(100).format(formatter),
                 LocalDateTime.now().format(formatter),
-                new String[]{request.getRequestURI()},
+                new String[]{reqUrl},
                 true);
 
         Optional<StatsDto> statDto;
