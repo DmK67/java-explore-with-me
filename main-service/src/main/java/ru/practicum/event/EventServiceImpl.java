@@ -18,7 +18,6 @@ import ru.practicum.location.LocationRepository;
 import ru.practicum.user.User;
 import ru.practicum.user.UserRepository;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
