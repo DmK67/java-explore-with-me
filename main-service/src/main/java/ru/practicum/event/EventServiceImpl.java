@@ -18,7 +18,6 @@ import ru.practicum.location.LocationRepository;
 import ru.practicum.user.User;
 import ru.practicum.user.UserRepository;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -208,27 +207,19 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventFullDto getPublishedEventById(Long eventId, HttpServletRequest request) {
+    public EventFullDto getPublishedEventById(Long eventId, String reqUrl, String reqIp) {
         log.info("Getting information about a published event by ID: event_id = " + eventId);
         Event event = eventRepository.findByIdAndState(eventId, EventState.PUBLISHED)
                 .orElseThrow(() -> new EventNotFoundException(eventId));
-
-        event.setViews(event.getViews() != null ? event.getViews() : 0L);
-
-        Integer countHits = getCountHits(request);
+        event.setViews(0L);
         statsClient.addHit(HitDto.builder()
                 .app("ewm-main-service")
-                .uri(request.getRequestURI())
-                .ip(request.getRemoteAddr())
+                .uri(reqUrl)
+                .ip(reqIp)
                 .timestamp(LocalDateTime.now().format(formatter))
                 .build());
-        Integer newCountHits = getCountHits(request);
-        if (newCountHits != null && newCountHits >= countHits) {
-            event.setViews(Long.valueOf(newCountHits));
-        }
-        EventFullDto eventFullDto = toEventFullDto(event);
-        eventFullDto.setViews(getCountHits(request));
-        return eventFullDto;
+        event.setViews(Long.valueOf(getCountHits(reqUrl, reqIp)));
+        return toEventFullDto(event);
     }
 
     private EventFullDto updateEventAdmin(Event event, UpdateEventAdminRequestDto updateEventAdminRequestDto) {
@@ -326,14 +317,14 @@ public class EventServiceImpl implements EventService {
         }
     }
 
-    private Integer getCountHits(HttpServletRequest request) {
-        log.info("Client ip: {}", request.getRemoteAddr());
-        log.info("Endpoint path: {}", request.getRequestURI());
+    private Integer getCountHits(String reqUrl, String reqIp) {
+        log.info("Client ip: {}", reqIp);
+        log.info("Endpoint path: {}", reqUrl);
 
         ResponseEntity<StatsDto[]> response = statsClient.getStats(
                 LocalDateTime.now().minusYears(100).format(formatter),
                 LocalDateTime.now().format(formatter),
-                new String[]{request.getRequestURI()},
+                new String[]{reqUrl},
                 true);
 
         Optional<StatsDto> statDto;

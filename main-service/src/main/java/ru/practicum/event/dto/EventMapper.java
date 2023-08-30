@@ -41,7 +41,6 @@ public class EventMapper {
                 .description(event.getDescription())
                 .eventDate(event.getEventDate().format(formatter))
                 .location(toLocationDto(event.getLocation()))
-                //.paid(event.isPaid())
                 .paid(event.getPaid())
                 .participantLimit(event.getParticipantLimit())
                 .requestModeration(event.isRequestModeration())
@@ -50,7 +49,6 @@ public class EventMapper {
                 .publishedOn(event.getPublishedOn() != null ? event.getPublishedOn().format(formatter) : null)
                 .initiator(toUserShortDto(event.getInitiator()))
                 .state(event.getState().toString())
-                //.views(event.getViews())
                 .views(event.getViews() != null ? event.getViews() : 0L)
                 .build();
     }
@@ -64,9 +62,7 @@ public class EventMapper {
                 .eventDate(event.getEventDate().format(formatter))
                 .confirmedRequests(countConfirmedRequests(event.getRequests()))
                 .initiator(toUserShortDto(event.getInitiator()))
-                //.paid(event.isPaid())
                 .paid(event.getPaid())
-                //.views(event.getViews())
                 .views(event.getViews() != null ? event.getViews() : 0L)
                 .build();
     }
